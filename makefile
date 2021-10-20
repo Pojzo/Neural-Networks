@@ -8,3 +8,5 @@ OBJ=main.o layer.o functions.o matrix.o
 
 main: $(OBJ)
 	$(CC) -o $@ $^ $(CFLAGS)
+
+

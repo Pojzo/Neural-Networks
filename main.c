@@ -6,14 +6,13 @@
 
 int main(int argc, char** argv) {
     const unsigned input_size = 10;
-    const double a[2][3] = {{1, 2, 3}, {3, 4, 5}};
+    const double a[4][3] = {{1, 2, 3}, {3, 4, 5}, {5, 6, 7}, {8, 9, 10}};
     const double b[3][2] = {{1, 2}, {2, 3}, {3, 4}};
    
-    struct Matrix* A = createMatrix(2, 3);
+    struct Matrix* A = createMatrix(4, 3);
     struct Matrix* B = createMatrix(3, 2);
 
-
-    for (unsigned i = 0; i < 2; i++) {
+    for (unsigned i = 0; i < 4; i++) {
         for (unsigned j = 0; j < 3; j++) {
             setMatrix(A, i, j, a[i][j]);
         }
@@ -24,8 +23,7 @@ int main(int argc, char** argv) {
             setMatrix(B, i, j, b[i][j]);
         }
     }
-    
-    printf("%0.2lf\n", A->data[0]);
+
     printMatrix(A);
     printMatrix(B);
 

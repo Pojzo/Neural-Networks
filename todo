@@ -1,0 +1,8 @@
+# create a matrix struct
+    functions: setMatrix - sets a value in matrix given row and column
+               getMatrix - returns a value from the matrix given row and column
+               createMatrix - creates a pointer to Matrix struct 
+               createMatrixFromInput - given a pointer to data, number of rows and columns, create a matrix using input data
+               matrixProduct - calculates matrix product of two matrices and returns pointer to newly created matrix
+
+ 

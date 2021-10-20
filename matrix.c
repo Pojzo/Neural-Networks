@@ -27,6 +27,7 @@ bool rowInRange(const Matrix_t* A, unsigned row) {
         fprintf(stderr, "Argument row must be greater or equal to zero\n");
         return false;
     }
+    return true;
 }
 
 bool colInRange(const Matrix_t* A, unsigned col) {
@@ -39,14 +40,17 @@ bool colInRange(const Matrix_t* A, unsigned col) {
         fprintf(stderr, "Argument col must be greater or equal to zero\n");
         return false;
     }
+    return true;
 }
 
 bool setMatrix(Matrix_t* A, unsigned row, unsigned col, double value) {
     if (!(rowInRange(A, row)) && colInRange(A, col)) {
         return false;
     }
+    unsigned index = row * A->cols + col;
 
-    A->data[row * A->cols + col] = value;
+    A->data[index] = value;
+
     return true;
 }
 
@@ -60,7 +64,7 @@ double getMatrix(const Matrix_t* A, unsigned row, unsigned col) {
 
 Matrix_t* matrixProduct(const Matrix_t* A, const Matrix_t* B) {
 
-    if (A->rows != B->cols) {
+    if (A->cols != B->rows) {
         fprintf(stderr, "dim1 and dim2 of matrices must match\n");
         return NULL;
     }
@@ -68,22 +72,23 @@ Matrix_t* matrixProduct(const Matrix_t* A, const Matrix_t* B) {
     unsigned result_x = A->rows;
     unsigned result_y = B->cols;
 
-    Matrix_t* matrix = createMatrix(result_x, result_y);
+    double* data = (double *) malloc(result_x * result_y * sizeof(double));
 
-    double* result = (double *) malloc(result_x * result_y * sizeof(double));
+    Matrix_t* result_matrix = createMatrix(result_x, result_y);
 
     double sum_cell;
-
-    for (unsigned i = 0; i < A->cols; i++) {
-        for (unsigned j = 0; j < B->rows; j++) {
+    
+    for (unsigned i = 0; i < result_x; i++) {
+        for (unsigned j = 0; j < result_y; j++) {
             sum_cell = 0;
             for (unsigned x = 0; x < A->cols; x++) {
-                sum_cell += A->data[x * A->rows + j] * B->data[x * A->rows + j];
+                sum_cell += getMatrix(A, i, x) * getMatrix(B, x, j);
             }
-            matrix->data[i * result_y + j]= sum_cell;
+            setMatrix(result_matrix, i, j, sum_cell);
         }
     }
-    return matrix;
+
+    return result_matrix;
 }
 
 void printMatrix(const Matrix_t* A) {
