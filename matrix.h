@@ -3,7 +3,6 @@
 #include <stdbool.h>
 
 struct Matrix {
-    struct UintPair* dim;
     double *data;
     unsigned rows;
     unsigned cols;
@@ -12,6 +11,7 @@ struct Matrix {
 typedef struct Matrix Matrix_t;
 
 Matrix_t* createMatrix(unsigned rows, unsigned cols);
+Matrix_t* createMatrixFromInput(const double* input, unsigned rows, unsigned cols);
 
 bool rowInRange(const Matrix_t*, unsigned row);
 bool colInRange(const Matrix_t*, unsigned col);

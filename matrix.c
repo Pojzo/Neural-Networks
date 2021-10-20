@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "matrix.h"
+#include "functions.h"
 
 #define FLOAT_PRECISION 2
 
@@ -14,6 +15,26 @@ Matrix_t* createMatrix(unsigned rows_, unsigned cols_) {
     matrix->cols = cols_;
     matrix->data = (double*) malloc(matrix->rows * matrix->cols * sizeof(double));
 
+    return matrix;
+}
+
+Matrix_t* createMatrixFromInput(const double* input, unsigned rows, unsigned cols) {
+    /*
+    unsigned input_len = vectorLen(input);
+    if (input_len != rows * cols) {
+        fprintf(stderr, "length of input doesnt match rows * cols\n");
+        return NULL;
+    }
+    */
+    
+    Matrix_t* matrix = createMatrix(rows, cols);
+    printf("rows: %u\ncols: %u\n", matrix->rows, matrix->cols);
+
+    for (unsigned i = 0; i < matrix->rows; i++) {
+        for (unsigned j = 0; j < matrix->cols; j++) {
+            setMatrix(matrix, i, j, input[i * cols + j]); // copy from input to matrix
+        }
+    }
     return matrix;
 }
 
@@ -77,7 +98,7 @@ Matrix_t* matrixProduct(const Matrix_t* A, const Matrix_t* B) {
     Matrix_t* result_matrix = createMatrix(result_x, result_y);
 
     double sum_cell;
-    
+
     for (unsigned i = 0; i < result_x; i++) {
         for (unsigned j = 0; j < result_y; j++) {
             sum_cell = 0;
