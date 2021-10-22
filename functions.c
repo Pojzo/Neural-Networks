@@ -1,8 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "functions.h"
-#include "matrix.h"
-
 
 double randDouble(const double start, const double end) {
     if (start > end) {
@@ -14,9 +12,5 @@ double randDouble(const double start, const double end) {
 
     float range = end - start;
     return (random * range) + start;
-}
-
-unsigned vectorLen(const double* input) {
-    return sizeof(input) / sizeof(double);
 }
 

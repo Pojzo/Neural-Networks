@@ -1,11 +1,35 @@
 # create a matrix struct
-    functions: setMatrix - sets a value in matrix given row and column
+    attributes: <double*> data
+                <unsigned int> rows
+                <unsigned int> cols
+
+    methods: setMatrix - sets a value in matrix given row and column
                getMatrix - returns a value from the matrix given row and column
+
                createMatrix - creates a pointer to Matrix struct 
                createMatrixFromInput - given a pointer to data, number of rows and columns, create a matrix using input data
+               updateMatrixFromInput - updates matrix given input data
+
                matrixProduct - calculates matrix product of two matrices and returns pointer to newly created matrix
+               matrixTranspose - returns transposed matrix
 
-               ----- done
+               freeMatrix - frees given matrix from memory
 
-# create a layer class 
- 
+
+
+# create a DenseLayer class 
+    attributes: <unsigned int> num_neurons
+                <Matrix*> biases - represents a bias for each neuron
+                <Matrix*> weights- represents connections for each neuron with each input, matrix - row for each neuron, containing weight for each input
+
+    methods: createDenseLayer - return a pointer to DenseLayer struct, weights and biases are initialized randomly
+             initLayer - randomly initializes weights and biases
+             initWeights - randomly initializes weights of layer
+             initBiases - randomly intiializes biases of layer
+            
+             updateWeightsFromInput -  updates weights of a layer given input
+             updateBiasesFromInput - updates biases of a layer given input
+
+             printWeights - prints weights of the layer
+             printBiases - prints biases of the layer
+             
