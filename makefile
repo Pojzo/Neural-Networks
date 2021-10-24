@@ -1,12 +1,30 @@
-CC=gcc
-CLAGS=-Wall -std=c99
-DEPS=layer.h functions.h
-OBJ=main.o dense_layer.o functions.o matrix.o
+# Makefile
 
-%.o: %.c $(DEPS)
-	$(CC) -c -o $@ $< $(CFLAGS)
+CROSS_COMPILE=
+CC=$(CROSS_COMPILE)gcc
 
-main: $(OBJ)
-	$(CC) -o $@ $^ $(CFLAGS)
+SRCDIR=src
+SRCEXT=c
+BUILDDIR=build
+BINDIR=bin
+BINNAME=main
 
+BIN=$(BINDIR)/$(BINNAME)
+SOURCES=$(wildcard $(SRCDIR)/*.$(SRCEXT))
+OBJECTS=$(patsubst $(SRCDIR)/%, $(BUILDDIR)/%, $(SOURCES:.$(SRCEXT)=.o))
+
+CFLAGS=-g
+LIB=
+
+$(BIN): $(OBJECTS)
+	@mkdir -p $(BINDIR)
+	$(CC) $^ -o $(BIN) $(LIB)
+
+$(BUILDDIR)/%.o: $(SRCDIR)/%.$(SRCEXT)
+	@mkdir -p $(BUILDDIR)
+	$(CC) $(CFLAGS) -c -o $@ $<
+
+.PHONY: clean
+clean:
+	$(RM) -r $(BUILDDIR) $(BINDIR)
 

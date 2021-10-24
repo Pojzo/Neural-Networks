@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include "matrix.h"
 
-#define FLOAT_PRECISION 2
+#define FLOAT_PRECISION 20
 
 Matrix_t* createMatrix(unsigned num_rows_, unsigned num_cols_) {
     if (num_rows_ == 0 || num_cols_ == 0 ) {
@@ -172,8 +172,6 @@ void freeMatrix(Matrix_t* A) {
 void testPrintMatrix(const Matrix_t* A) {
     for (unsigned i = 0; i < A->num_rows; i++)  {
         for (unsigned j = 0; j < A->num_cols; j++) {
-            printf("%*.*lf,", 0, FLOAT_PRECISION, getMatrix(A, i, j));
-            continue;
             if (i == 0 && j == 0) {
                 printf("%*.*lf", 0, FLOAT_PRECISION, getMatrix(A, i, j));
             }
