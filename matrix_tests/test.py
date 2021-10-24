@@ -16,7 +16,7 @@ def equalMatrices(A: list[list[float]], B: list[list[float]]) -> bool:
 
 matrices = []
 
-num_tests = 5
+num_tests = 1
 
 program = run(["./test"], stdout=PIPE,stderr=PIPE,
                     input="test", encoding='ascii')
@@ -24,25 +24,25 @@ program = run(["./test"], stdout=PIPE,stderr=PIPE,
 output = list(program.stdout.split(','))
 num_matrices = int(output[4])
 
+rows1 = int(output[0])
+
+rows2 = int(output[1])
+
+cols1 = int(output[2])
+cols2 = int(output[3])
+
+rows_final = rows1
+cols_final = cols2
+
 first = list(np.zeros((rows1, cols1), dtype=float))
 second = list(np.zeros((rows2, cols2), dtype=float))
 product = list(np.zeros((rows_final, cols_final), dtype=float))
 
 offset = 0
 
+output = output[4:]
+
 for x in range(num_tests):
-    rows1 = int(output[offset])
-    rows2 = int(output[offset + 1])
-
-    cols1 = int(output[offset + 2])
-    cols2 = int(output[offset + 3])
-
-    rows_final = rows1
-    cols_final = cols2
-
-    if x == 0:
-        output = output[5:]
-
     for i in range(rows1):
         for j in range(cols1):
             first[i][j] = output[offset + (i * cols1 + j)]
@@ -60,6 +60,15 @@ for x in range(num_tests):
             product[i][j] = output[offset + (i * cols_final + j)]
 
     offset += rows_final + cols_final
+    rows1 = int(output[offset])
+    rows2 = int(output[offset + 1])
+
+    cols1 = int(output[offset + 2])
+    cols2 = int(output[offset + 3])
+
+    rows_final = rows1
+    cols_final = cols2
+
     print(product)
     print(np.dot(first, second))
     if equalMatrices(np.array(product), np.dot(first, second)):
