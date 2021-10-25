@@ -9,6 +9,8 @@ const unsigned num_inputs = 4;
 const unsigned num_neurons = 3;
 
 int main(int argc, char** argv) {
+    (void) argc;
+    (void) argv;
 
     Matrix_t* test = createRandomMatrix(4, 5);
     printMatrix(test);

@@ -21,77 +21,103 @@ def create_random_matrix(rows: int, cols: int) -> np.array:
     return np.random.random((rows, cols))
 
 def equalMatrices(A: list[list[float]], B: list[list[float]]) -> bool:
+    A = np.around(A, FLOAT_PRECISION)
+    B = np.around(B, FLOAT_PRECISION)
     comparison = A == B
-    return comparison.all()
+    x = comparison.all()
+    comparison = np.resize(comparison, (A.shape[0], A.shape[1]))
+    for row, i in enumerate(comparison):
+        for col, j in enumerate(i):
+            if not j:
+                print(A[row][col], B[row][col])
 
+    return x
+
+FLOAT_PRECISION = 10
 matrices = []
 
 num_tests = 100
-program = run(["./test"] + [str(num_tests + 1)], stdout=PIPE,stderr=PIPE,
-                    input="test", encoding='ascii')
+if num_tests > 5:
+    batches = num_tests // 5
 
-output = list(program.stdout.split(','))
-
-rows1 = int(output[0])
-
-rows2 = int(output[1])
-
-cols1 = int(output[2])
-cols2 = int(output[3])
-
-rows_final = rows1
-cols_final = cols2
-
-
-offset = 0
-output = output[4:-1]
+else:
+    batches  = 1
 
 num_passed = 0
+current_test = 1
+output = []
+def test(num_tests):
+    global num_passed
+    global current_test
+    global output 
 
-for x in range(num_tests):
+    program = run(["./test"] + [str(batches), str(current_test)], stdout=PIPE,stderr=PIPE,
+                        input="test", encoding='ascii')
+    
+    output = list(program.stdout.split(','))
 
-    first = list(np.zeros((rows1, cols1), dtype=float))
-    second = list(np.zeros((rows2, cols2), dtype=float))
-    product = list(np.zeros((rows_final, cols_final), dtype=float))
+    rows1 = int(output[0])
 
-    for i in range(rows1):
-        for j in range(cols1):
-            first[i][j] = output[offset + (i * cols1 + j)]
+    rows2 = int(output[2])
 
-    offset += rows1 * cols1
+    cols1 = int(output[1])
+    cols2 = int(output[3])
 
-    for i in range(rows2):
-        for j in range(cols2):
-            second[i][j] = output[offset + (i * cols2 + j)]
+    rows_final = rows1
+    cols_final = cols2
 
-    offset += rows2 * cols2
+    offset = 0
+    output = output[4:-1]
 
-    for i in range(rows_final):
-        for j in range(cols_final):
-            product[i][j] = output[offset + (i * cols_final + j)]
+    for x in range(num_tests):
+        first = list(np.zeros((rows1, cols1), dtype=float))
+        second = list(np.zeros((rows2, cols2), dtype=float))
+        product = list(np.zeros((rows_final, cols_final), dtype=float))
 
-    offset += rows_final * cols_final
+        for i in range(rows1):
+            for j in range(cols1):
+                first[i][j] = output[offset + (i * cols1 + j)]
 
-    if (x != num_tests - 1):
-        rows1 = int(output[offset])
-        rows2 = int(output[offset + 1])
+        offset += rows1 * cols1
 
-        cols1 = int(output[offset + 2])
-        cols2 = int(output[offset + 3])
+        for i in range(rows2):
+            for j in range(cols2):
+                second[i][j] = output[offset + (i * cols2 + j)]
 
-        rows_final = rows1
-        cols_final = cols2
+        offset += rows2 * cols2
 
-    offset += 4
+        for i in range(rows_final):
+            for j in range(cols_final):
+                product[i][j] = output[offset + (i * cols_final + j)]
 
-    if equalMatrices(np.array(product), np.dot(first, second)):
-        print(colors.OKGREEN + "[OK] Passed test {}, size = ({}, {}) * ({}, {}) ".format(x, rows1, cols1, rows2, cols2) + colors.ENDC)
-        num_passed += 1
+        offset += rows_final * cols_final
 
-    else:
-        print(colors.FAIL + "[FAIL] Didnt pass test {}, size = ({}, {}) * ({}, {}) ".format(x, rows1, cols1, rows2, cols2) + colors.ENDC)
+        if (x != num_tests - 1):
+            rows1 = int(output[offset])
+            rows2 = int(output[offset + 1])
 
-            #output_matrix = np.array(list(map(float, output.stdout.split(','))))
+            cols1 = int(output[offset + 2])
+            cols2 = int(output[offset + 3])
+            #print(rows1, cols1, rows2, cols2)
+
+            rows_final = rows1
+            cols_final = cols2
+
+        offset += 4
+
+        current_test += 1
+        if equalMatrices(np.array(product), np.dot(first, second)):
+            print(colors.OKGREEN + "[OK] Passed test {}, size = ({}, {}) * ({}, {}) ".format(current_test - 1, rows1, cols1, rows2, cols2) + colors.ENDC)
+            num_passed += 1
+
+        else:
+            print(colors.FAIL + "[FAIL] Didnt pass test {}, size = ({}, {}) * ({}, {}) ".format(current_test - 1, rows1, cols1, rows2, cols2) + colors.ENDC)
+
+                #output_matrix = np.array(list(map(float, output.stdout.split(','))))
+
+
+for i in range(batches):
+    test(5)
 
 if num_passed == num_tests:
     print(colors.OKGREEN + f"Passed {num_passed} / {num_passed} tests" + colors.ENDC)

@@ -6,7 +6,7 @@
 
 Matrix_t* createMatrix(unsigned num_rows_, unsigned num_cols_) {
     if (num_rows_ == 0 || num_cols_ == 0 ) {
-        fprintf(stderr, "Number of num_rows and columns cant be zero");
+        fprintf(stderr, "Number of rows and columns cant be zero\n");
         return NULL;
     }
     Matrix_t* matrix = (Matrix_t*) malloc(sizeof(Matrix_t));
@@ -60,21 +60,12 @@ bool rowInRange(const Matrix_t* A, unsigned row) {
         return false;
     }
 
-    if (row < 0) {
-        fprintf(stderr, "Argument row must be greater or equal to zero\n");
-        return false;
-    }
     return true;
 }
 
 bool colInRange(const Matrix_t* A, unsigned col) {
     if (col > A->num_rows)  {
         fprintf(stderr, "Specified row exceeds matrix dimensions\n");
-        return false;
-    }
-
-    if (col < 0) {
-        fprintf(stderr, "Argument col must be greater or equal to zero\n");
         return false;
     }
     return true;
@@ -102,7 +93,7 @@ double getMatrix(const Matrix_t* A, unsigned row, unsigned col) {
 Matrix_t* matrixProduct(const Matrix_t* A, const Matrix_t* B) {
 
     if (A->num_cols != B->num_rows) {
-        fprintf(stderr, "dim1 and dim2 of matrices must match\n");
+        fprintf(stderr, "Number of columns of first matrix must equal number of rows of second matrix\n");
         return NULL;
     }
 
@@ -170,6 +161,10 @@ void freeMatrix(Matrix_t* A) {
 }
 
 void testPrintMatrix(const Matrix_t* A) {
+    if (!A) {
+        fprintf(stderr, "Cant print matrix, == NULL\n");
+    }
+
     for (unsigned i = 0; i < A->num_rows; i++)  {
         for (unsigned j = 0; j < A->num_cols; j++) {
             if (i == 0 && j == 0) {
@@ -183,6 +178,10 @@ void testPrintMatrix(const Matrix_t* A) {
 }
 
 void printMatrix(const Matrix_t* A) {
+    if (!A) {
+        fprintf(stderr, "Cant print matrix, == NULL\n");
+    }
+
     printf("printing matrix of size (%d, %d)\n", A->num_rows, A->num_cols);
     for (unsigned i = 0; i < A->num_rows; i++)  {
         for (unsigned j = 0; j < A->num_cols; j++) {
