@@ -4,7 +4,6 @@
 #include "functions.h"
 #include "matrix.h"
 
-
 const unsigned num_inputs = 4;
 const unsigned num_neurons = 3;
 
@@ -12,21 +11,18 @@ int main(int argc, char** argv) {
     (void) argc;
     (void) argv;
 
-    Matrix_t* test = createRandomMatrix(4, 5);
-    printMatrix(test);
-
-    return 0;
     DenseLayer_t* layer = createDenseLayer(num_inputs, num_neurons);
     initLayer(layer);
     //double* test = malloc(sizeof(double));
      
-    double inputs_ar[] = {1., 2., 3., 2.5};
-    double weights_ar[] = {0.2, 0.8, -0.5, 1.0, 0.5, -0.91, 0.26, -0.5, -0.26, -0.27, 0.17, 0.87};
-    double biases_ar[] = {2., 3., 0.5};
+    const double inputs_ar[] = {1., 2., 3., 2.5};
+    const double weights_ar[] = {0.2, 0.8, -0.5, 1.0, 0.5, -0.91, 0.26, -0.5, -0.26, -0.27, 0.17, 0.87};
+    const double biases_ar[] = {2., 3., 0.5};
 
     Matrix_t* inputs = createMatrixFromInput(inputs_ar, 1, 3);
     Matrix_t* weights = createMatrixFromInput(weights_ar, num_neurons, num_inputs);
     Matrix_t* biases = createMatrixFromInput(biases_ar, 1, 3);
+    Matrix_t* output = matrixProduct(weights, inputs); 
 
     updateMatrixFromInput(layer->weights, weights->data);
     updateMatrixFromInput(layer->biases, biases->data);
@@ -42,6 +38,10 @@ int main(int argc, char** argv) {
 
     printf("This are biases\n");
     printBiases(layer);
+
+    printf("Dot product\n");
+    printMatrix(output);
+
 
     //Matrix_t* result_matrix = matrixProduct(inputs, weights);
     //printMatrix(result_matrix);

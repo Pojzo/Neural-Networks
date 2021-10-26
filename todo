@@ -15,6 +15,8 @@
 
                freeMatrix - frees given matrix from memory
 
+# tests for matrix product located in ./matrix_tests/
+# run tests with bash testpy
 
 
 # create a DenseLayer class 
@@ -32,4 +34,6 @@
 
              printWeights - prints weights of the layer
              printBiases - prints biases of the layer
+
+
              

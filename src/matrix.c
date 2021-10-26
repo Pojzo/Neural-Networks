@@ -2,7 +2,8 @@
 #include <stdio.h>
 #include "matrix.h"
 
-#define FLOAT_PRECISION 20
+#define FLOAT_PRECISION_TEST 20
+#define FLOAT_PRECISION 2
 
 Matrix_t* createMatrix(unsigned num_rows_, unsigned num_cols_) {
     if (num_rows_ == 0 || num_cols_ == 0 ) {
@@ -101,6 +102,7 @@ Matrix_t* matrixProduct(const Matrix_t* A, const Matrix_t* B) {
     unsigned result_y = B->num_cols;
 
     double* data = (double *) malloc(result_x * result_y * sizeof(double));
+    (void) data; // FIXME
 
     Matrix_t* result_matrix = createMatrix(result_x, result_y);
 
@@ -127,7 +129,6 @@ Matrix_t* matrixAddition(const Matrix_t* A, const Matrix_t* B) {
 
     Matrix_t* matrix = createMatrix(A->num_rows, A->num_cols);
 
-    double* inputs = (double*) malloc(sizeof(double));
     double first_value, second_value;
 
     for (unsigned i = 0; i < A->num_rows; i++) {
@@ -168,10 +169,10 @@ void testPrintMatrix(const Matrix_t* A) {
     for (unsigned i = 0; i < A->num_rows; i++)  {
         for (unsigned j = 0; j < A->num_cols; j++) {
             if (i == 0 && j == 0) {
-                printf("%*.*lf", 0, FLOAT_PRECISION, getMatrix(A, i, j));
+                printf("%*.*lf", 0, FLOAT_PRECISION_TEST, getMatrix(A, i, j));
             }
             else {
-                printf(",%*.*lf", 0, FLOAT_PRECISION, getMatrix(A, i, j));
+                printf(",%*.*lf", 0, FLOAT_PRECISION_TEST, getMatrix(A, i, j));
             }
         }
     }

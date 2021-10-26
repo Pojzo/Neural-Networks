@@ -10,6 +10,7 @@ struct DenseLayer {
     unsigned num_neurons;
     struct Matrix* weights;
     struct Matrix* biases;
+    struct Matrix* output;
 };
 
 typedef struct DenseLayer DenseLayer_t;
@@ -25,5 +26,7 @@ void updateBiasesFromInput(DenseLayer_t* dense_layer, const Matrix_t* biases);
 
 void printWeights(DenseLayer_t* dense_layer);
 void printBiases(DenseLayer_t* dense_layer);
+
+void forward(DenseLayer_t* dense_layer);
 
 #endif

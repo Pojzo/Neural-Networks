@@ -16,6 +16,7 @@ DenseLayer_t* createDenseLayer(unsigned num_inputs_, unsigned num_neurons_) {
 
     dense_layer->weights = createMatrix(dense_layer->num_neurons, dense_layer->num_inputs);
     dense_layer->biases = createMatrix(1, dense_layer->num_neurons);
+    dense_layer->output = createMatrix(dense_layer->num_neurons, 1);
 
     return dense_layer;
 }
@@ -57,3 +58,7 @@ void printWeights(DenseLayer_t* dense_layer) {
 void printBiases(DenseLayer_t* dense_layer) {
     printMatrix(dense_layer->biases);
 }
+
+void forward(DenseLayer_t* dense_layer) {
+}
+
